@@ -1,0 +1,193 @@
+/* Global styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f6f6f6;
+}
+.navbar {
+    background-color: #ff6600; /* Swiggy's Orange */
+}
+
+.navbar-nav .nav-link {
+    color: white;
+}
+
+
+.navbar-nav .nav-link:hover {
+    color: #000; /* Black on hover */
+}
+
+.navbar-brand {
+    color: white;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fc8019;
+}
+
+.navbar {
+    border-bottom: 1px solid #e2e2e2;
+}
+
+/* Space between nav links */
+.nav-item .nav-link {
+    margin-right: 20px; /* Adjust the space between links */
+    color: #333; /* Darker color for readability */
+    font-weight: 500; /* Slightly bolder links */
+}
+
+.nav-item .nav-link:hover {
+    color: #fc8019; /* Swiggy orange color on hover */
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item:hover {
+    background-color: #fc8019;
+    color: white;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+/* Adjust cart icon */
+.nav-link i {
+    font-size: 1.2rem;
+    margin-right: 5px; /* Space between icon and text */
+}
+
+
+/* Restaurant Listing */
+.restaurant-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.restaurant-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.restaurant-card-body {
+    padding: 15px;
+}
+
+.restaurant-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.restaurant-location {
+    color: #777;
+}
+
+.food-item {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.food-item .price {
+    font-weight: bold;
+    color: #fc8019;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #fc8019;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e76918;
+}
+
+/* Main content should take remaining height */
+
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    position: relative;
+    width: 100%;
+}
+
+.footer a {
+    color: #fc8019;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    text-align: center;
+}
+
+
+        /* Ensure all cards have the same size */
+        .card {
+            height: 400px;
+            overflow: hidden;
+        }
+
+        /* Ensure card images transform on hover */
+        .card-img-top {
+            transition: transform 0.3s ease;
+        }
+
+        .card-img-top:hover {
+            transform: scale(1.1); /* Image zoom effect */
+        }
+
+        /* Ensure card description is limited to 2 lines with ellipsis */
+        .card-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Custom styles for shadow effect and bold INR */
+        .card-img-top {
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+        }
+        .card-title {
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding-bottom: 50px; /* To ensure space for price tag */
+        }
+
+        .price-tag {
+        font-weight: bold;
+        font-size: 1.3rem; /* Larger font size */
+        color: #ff4500; /* Change text color to a bright orange or any color you prefer */
+        padding: 5px 10px; /* Padding around the price */
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+        font-family: 'Arial', sans-serif; /* Change font family if needed */
+        }

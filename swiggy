@@ -1,0 +1,403 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Sep 18, 2024 at 02:33 PM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `swiggy`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `delivery`
+--
+
+CREATE TABLE `delivery` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `delivery_person_id` int(11) DEFAULT NULL,
+  `delivery_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` enum('assigned','picked','delivered') DEFAULT 'assigned'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `delivery`
+--
+
+INSERT INTO `delivery` (`id`, `order_id`, `delivery_person_id`, `delivery_time`, `status`) VALUES
+(1, 6, 3, '2024-09-18 08:27:05', 'picked'),
+(2, 6, 3, '2024-09-18 08:30:41', 'picked'),
+(3, 6, 3, '2024-09-18 08:30:57', 'delivered'),
+(4, 7, 3, '2024-09-18 08:31:31', 'assigned'),
+(5, 10, 3, '2024-09-18 11:16:44', 'assigned'),
+(6, 7, 3, '2024-09-18 11:21:53', 'picked'),
+(7, 11, 3, '2024-09-18 12:15:43', 'assigned'),
+(8, 11, 3, '2024-09-18 12:15:57', 'picked'),
+(9, 11, 3, '2024-09-18 12:16:10', 'delivered');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `food_items`
+--
+
+CREATE TABLE `food_items` (
+  `id` int(11) NOT NULL,
+  `restaurant_id` int(11) DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `deleted` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `food_items`
+--
+
+INSERT INTO `food_items` (`id`, `restaurant_id`, `name`, `description`, `price`, `image`, `deleted`) VALUES
+(1, 1, 'Dosa', 'A dosa is a traditional South Indian crepe made from fermented rice and urad dal (black gram) batter. Crispy and golden brown on the outside, it\'s soft and tender on the inside. Served with a variety of accompaniments such as sambar (a spicy lentil soup) and coconut chutney, dosa is a versatile dish that can be enjoyed as a breakfast, snack, or even a main meal. Variations like masala dosa, which includes a spicy potato filling, and rava dosa, made from semolina, add to the rich diversity of this beloved dish. It\'s a perfect blend of flavor, texture, and tradition.', '35.00', '6ef07bda-b707-48ea-9b14-2594071593d1_Dosa.avif', 0),
+(2, 1, 'Burger', 'A burger is a classic American sandwich featuring a juicy, grilled beef patty nestled between a soft, toasted bun. Often topped with lettuce, tomato, cheese, and condiments, it\'s a versatile and satisfying meal enjoyed worldwide.', '199.00', '8f508de7-e0ac-4ba8-b54d-def9db98959e_burger.avif', 0),
+(3, 3, 'Briyani', 'Biryani is a flavorful and aromatic rice dish cooked with a blend of spices, basmati rice, and marinated meat (such as chicken, lamb, or beef), often accompanied by vegetables or boiled eggs. Originating from South Asia, it is a popular and indulgent meal enjoyed for its rich taste and cultural significance.', '250.00', '6ef07bda-b707-48ea-9b14-2594071593d1_Biryani.avif', 0),
+(4, 3, 'Briyani', '', '250.00', '6ef07bda-b707-48ea-9b14-2594071593d1_Biryani.avif', 1),
+(5, 3, 'Shawarma', 'Shawarma is a delicious Middle Eastern wrap made with thinly sliced marinated meat, usually chicken or beef, cooked on a vertical rotisserie. Served in pita bread with vegetables, sauces, and pickles, it\'s a flavorful and satisfying street food favorite.', '80.00', 'f1263395-5d4a-4775-95dc-80ab6f3bbd89_shawarma.avif', 0),
+(6, 1, 'Momos', 'Momos are steamed dumplings filled with meat or vegetables, popular in South Asian cuisine, especially in Nepal and Tibet. Often served with spicy dipping sauces, they are a delicious and comforting street food snack.', '100.00', '6ef07bda-b707-48ea-9b14-2594071593d1_Momos.avif', 0),
+(7, 1, 'Noodles', 'Noodles are a versatile dish enjoyed worldwide, often stir-fried or served in soups with vegetables, meats, and flavorful sauces. Originating in Asia, they offer a quick and satisfying meal packed with texture and taste.', '150.00', '6ef07bda-b707-48ea-9b14-2594071593d1_Noodles.avif', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `notification_id` int(11) NOT NULL,
+  `delivery_person_id` int(11) DEFAULT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `message` text DEFAULT NULL,
+  `seen` tinyint(1) DEFAULT 0,
+  `sent_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `restaurant_id` int(11) DEFAULT NULL,
+  `delivery_person_id` int(11) NOT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `status` enum('pending','take_overed','pick_up','on_the_way','delivered','canceled') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `restaurant_id`, `delivery_person_id`, `total_price`, `status`, `created_at`) VALUES
+(1, 2, NULL, 0, '199.00', 'canceled', '2024-09-16 15:51:04'),
+(2, 2, 1, 3, '35.00', 'delivered', '2024-09-16 16:29:07'),
+(3, 2, 1, 3, '199.00', 'delivered', '2024-09-16 17:51:54'),
+(4, 2, 1, 3, '1194.00', 'delivered', '2024-09-17 08:59:05'),
+(5, 2, 3, 0, '250.00', 'canceled', '2024-09-17 11:41:23'),
+(6, 2, 1, 3, '105.00', 'delivered', '2024-09-18 07:16:52'),
+(7, 2, 3, 3, '250.00', 'on_the_way', '2024-09-18 08:26:43'),
+(8, 2, 1, 0, '398.00', 'pending', '2024-09-18 09:44:51'),
+(9, 2, 3, 0, '250.00', 'pending', '2024-09-18 09:46:26'),
+(10, 2, 3, 3, '1250.00', 'take_overed', '2024-09-18 10:35:23'),
+(11, 2, 1, 3, '350.00', 'delivered', '2024-09-18 12:14:13');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `food_item_id` int(11) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `food_item_id`, `quantity`, `price`) VALUES
+(1, 2, 1, 1, '35.00'),
+(2, 3, 2, 1, '199.00'),
+(3, 4, 2, 6, '1194.00'),
+(4, 5, 4, 1, '250.00'),
+(5, 6, 1, 3, '105.00'),
+(6, 7, 3, 1, '250.00'),
+(7, 8, 2, 2, '398.00'),
+(8, 9, 3, 1, '250.00'),
+(9, 10, 3, 5, '1250.00'),
+(10, 11, 1, 10, '350.00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `restaurants`
+--
+
+CREATE TABLE `restaurants` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `address` text NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `open_time` time DEFAULT NULL,
+  `close_time` time DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `deleted` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `restaurants`
+--
+
+INSERT INTO `restaurants` (`id`, `name`, `description`, `address`, `phone`, `open_time`, `close_time`, `image`, `deleted`) VALUES
+(1, 'TS Restaurant', 'TS Restaurant: Experience a blend of local and international cuisine in a cozy, modern setting. Enjoy delicious meals prepared with fresh ingredients and exceptional service for an unforgettable dining experience.', 'Coimbatour', '8654234567', '10:00:00', '23:00:00', 'ts.png', 0),
+(2, 'TS Restaurant', '', 'Coimbatour', '8654234567', '10:00:00', '23:00:00', 'ts.png', 1),
+(3, 'Tharshini ', 'Tharshini Restaurant: Offering a unique fusion of traditional flavors and contemporary dishes, Tharshini Restaurant provides a warm, welcoming atmosphere. Indulge in a culinary journey with expertly crafted meals made from the finest ingredients.', 'Tisaiyanvilai', '8300743287', '09:00:00', '23:00:00', 'shutterstock_1785799178-justert-til-plusskunde-med-batterier.jpg', 0),
+(4, 'Parvathi Restaurant', 'Parvathi Restaurant is a popular eatery known for its authentic South Indian cuisine and warm ambiance. It offers a variety of traditional dishes, making it a favorite among locals and visitors alike.', 'Chennai', '8625123456', '07:00:00', '23:00:00', 'download.jpeg', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `payment_method` varchar(50) NOT NULL,
+  `transaction_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `order_id`, `user_id`, `amount`, `payment_method`, `transaction_date`) VALUES
+(1, 8, 2, '398.00', 'Online', '2024-09-18 06:14:51'),
+(2, 9, 2, '250.00', 'Online', '2024-09-18 06:16:26'),
+(3, 10, 2, '1250.00', 'Online', '2024-09-18 07:05:23'),
+(4, 11, 2, '350.00', 'Online', '2024-09-18 08:44:13');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `phone` varchar(15) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `role` enum('customer','admin','delivery') DEFAULT 'customer'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `name`, `email`, `password`, `phone`, `address`, `role`) VALUES
+(1, 'admin', 'Admin', 'admin@gmail.com', '$2y$10$ZLql1BjgMCbeKfTUgRPR6.noZzinScZFrBM6EVs.hyVZb5K02e5uG', '1234567890', 'TN', 'admin'),
+(2, 'user1', 'Harini S', 'hari@gmail.com', '$2y$10$.FKVSDANBSnZH5Mu/kuCuOTYgTnvPU.23XEsGHNaeA9UczjVuWaoC', '7654321765', 'Tisaiyanvilai', 'customer'),
+(3, 'delivery person', ' Rithi', 'rithi@gmail.com', '$2y$10$P/i3L9zFZZeBbrSnueTm0OohauZf2Cao839x/Rq6CcWFLA8rnkOwe', '8257345672', 'Thoothukudi', 'delivery');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `delivery`
+--
+ALTER TABLE `delivery`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `delivery_person_id` (`delivery_person_id`);
+
+--
+-- Indexes for table `food_items`
+--
+ALTER TABLE `food_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `restaurant_id` (`restaurant_id`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`notification_id`),
+  ADD KEY `delivery_person_id` (`delivery_person_id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `restaurant_id` (`restaurant_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `food_item_id` (`food_item_id`);
+
+--
+-- Indexes for table `restaurants`
+--
+ALTER TABLE `restaurants`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `delivery`
+--
+ALTER TABLE `delivery`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `food_items`
+--
+ALTER TABLE `food_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `restaurants`
+--
+ALTER TABLE `restaurants`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `delivery`
+--
+ALTER TABLE `delivery`
+  ADD CONSTRAINT `delivery_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `delivery_ibfk_2` FOREIGN KEY (`delivery_person_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `food_items`
+--
+ALTER TABLE `food_items`
+  ADD CONSTRAINT `food_items_ibfk_1` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`);
+
+--
+-- Constraints for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`delivery_person_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`);
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`);
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`food_item_id`) REFERENCES `food_items` (`id`);
+
+--
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
+  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

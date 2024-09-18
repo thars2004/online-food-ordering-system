@@ -1,0 +1,137 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Sidebar Styles */
+#sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6; /* Light border on the right */
+}
+
+#sidebar .nav-link {
+    color: #495057; /* Darker text color for links */
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem; /* Rounded corners for active item */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+#sidebar .nav-link.active {
+    background-color: #007bff; /* Blue background for active link */
+    color: #fff; /* White text color for active link */
+    font-weight: bold; /* Bold text for active link */
+}
+
+#sidebar .nav-link:hover {
+    background-color: #f8f9fa; /* Light gray background on hover */
+    color: #007bff; /* Blue text color on hover */
+}
+
+/* Header Styles */
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    padding: 15px;
+    color: #343a40; /* Dark color for text in header */
+}
+
+header .btn-group {
+    margin-right: 1rem;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th,
+table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #e9ecef;
+}
+
+/* Dashboard Styles */
+.container-fluid {
+    padding: 20px;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-text {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+/* Background colors for cards */
+.bg-primary {
+    background-color: #007bff;
+}
+
+.bg-info {
+    background-color: #17a2b8;
+}
+
+.bg-success {
+    background-color: #28a745;
+}
+
+.bg-danger {
+    background-color: #dc3545;
+}
+
+.bg-warning {
+    background-color: #ffc107;
+}
+
+.bg-secondary {
+    background-color: #6c757d;
+}
+
+.bg-dark {
+    background-color: #343a40;
+}
+
+/* Text colors for cards */
+.text-white {
+    color: #fff;
+}
+
+.text-dark {
+    color: #343a40;
+}
